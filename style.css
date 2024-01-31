@@ -1,0 +1,47 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.calculator {
+    display: flex;
+    justify-content: center;
+    width: 25rem;
+    height: 40rem;
+    background-color: skyblue;
+    flex-wrap: wrap;
+}
+.display{
+    display: flex;;
+    width: 20rem;
+    height: 10rem;
+    background-color: lightgray;
+    margin: 1rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 3rem;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: .8rem;
+}
+.btns {
+    display: flex;
+    flex-wrap: wrap;
+    height: 60%;
+    width: 100%;
+    justify-content: center;
+}
+
+#clear,
+#equal {
+    width: 45%;
+}
+
+button{
+    display: flex;
+    width: 22%;
+    margin: .2rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background-color: lightgray;
+}
