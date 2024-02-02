@@ -1,11 +1,3 @@
-// let operator = '';
-// let firstOperand = '';
-let secondOperand = '';
-
-
-const numberButtons = document.querySelectorAll('[data-number]');
-const currentNum = document.querySelector('.currentNum')
-
 // CALCULATOR OBJECT
 const calculator = {
     displayValue: '0', 
@@ -40,20 +32,18 @@ btns.addEventListener('click', (event) => {
         return;
     }
     if(target.classList.contains('clear')) {
-        console.log(target.textContent)
+        clear()
+        updateDisplay()
         return;
     }
     if(target.classList.contains('delete')) {
         console.log(target.textContent)
         return;
     }
-    if(target.classList.contains('equal')) {
-        console.log(target.textContent)
-        return;
-    }
     inputNumber(target.textContent);
     updateDisplay();
 })
+
 //Function to handle numbers
 function inputNumber(number) {
     const {displayValue, waitingFOrSecondOperand} = calculator;
@@ -67,19 +57,37 @@ function inputNumber(number) {
     
     console.log(calculator)
 }
+
 //function to handle decimal
 function inputDecimal(dot) {
+    if(calculator.waitingFOrSecondOperand === true) {
+        calculator.displayValue = '0.'
+        calculator.waitingFOrSecondOperand = false;
+        return
+    }
+    
     if(!calculator.displayValue.includes(dot)) {
         calculator.displayValue += dot;
     }
 }
+
 //function to handle operators
 function handleOperators(nextOperator) {
     const {firstOperand, displayValue, operator} = calculator
     const inputValue = parseFloat(displayValue);
 
+    if(operator && calculator.waitingFOrSecondOperand) {
+        calculator.operator = nextOperator;
+        console.log(calculator);
+        return;
+    }
+
     if(firstOperand === null && !isNaN(inputValue)) {
         calculator.firstOperand = inputValue
+    }else if (operator) {
+        const result = calculate(firstOperand, inputValue, operator);
+
+        calculator.displayValue = String(result);
     }
 
     calculator.waitingFOrSecondOperand = true;
@@ -87,26 +95,31 @@ function handleOperators(nextOperator) {
     console.log(calculator)
 }
 
-//Operation functions
-const add = (num1, num2) => num1 + num2;
-const subtract = (num1,num2) => num1 - num2;
-const multiply = (num1,num2) => num1 * num2; 
-const divide = (num1, num2) => num1 / num2; 
-
-function operate(operator, a, b) {
-    a = Number(a)
-    b = Number(b)
-    switch (operator) {
-        case '+':
-            return add(a,b)
-        case '-':
-            return subtract(a,b)
-        case '×':
-            return multiply(a,b)
-        case '÷':
-            if(b === 0) return null
-            else return divide(a,b)
-        default:
-            return null   
-    }   
+//function to do calculations 
+function calculate(firstOperand, secondOperand, operator) {
+    if(operator === '+') {
+        return add(firstOperand, secondOperand)
+    }else if(operator === '-') {
+        return subtract(firstOperand, secondOperand)
+    }else if(operator === '×') {
+        return multiply(firstOperand, secondOperand)
+    }else if(operator === '÷') {
+        return divide(firstOperand, secondOperand)
+    }
+    return secondOperand;
 }
+
+function clear() {
+    calculator.displayValue = '0';
+    calculator.firstOperand = null;
+    calculator.waitingFOrSecondOperand = false;
+    calculator.operator = null
+    console.log(calculator);
+}
+
+//Operation functions
+const add = (firstOperand, secondOperand) => firstOperand + secondOperand;
+const subtract = (firstOperand,secondOperand) => firstOperand - secondOperand;
+const multiply = (firstOperand,secondOperand) => firstOperand * secondOperand; 
+const divide = (firstOperand, secondOperand) => firstOperand / secondOperand; 
+
